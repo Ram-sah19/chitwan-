@@ -1,8 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, ChevronDown, Compass, Leaf, Map, SlidersHorizontal, Snowflake, Flower2, CloudRain, Leaf as LeafIcon } from "lucide-react";
 import { site } from "@/data/site";
-import { heroRhino, expJungleWalk, wlDeer, aboutGuide } from "@/data/experiences";
-import { wildlifeFeatures } from "@/data/experiences";
+import { heroRhino, expJungleWalk, wlDeer, wlForest, wildlifeFeatures } from "@/data/experiences";
 import { Reveal } from "@/components/Reveal";
 import aboutGuideImg from "@/assets/about-guide.jpg";
 
