@@ -4,7 +4,7 @@ import { ExperiencesExplorer } from "@/components/ExperiencesExplorer";
 import { expBeeshazari } from "@/data/experiences";
 import { Reveal } from "@/components/Reveal";
 
-export const Route = createFileRoute("/experiences")({
+export const Route = createFileRoute("/experiences/")({
   head: () => ({
     meta: [
       {
