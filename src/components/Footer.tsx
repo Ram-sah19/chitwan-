@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { Compass, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { BrandLockup } from "@/components/BrandMark";
 import { site, whatsappLink } from "@/data/site";
 import { experiences } from "@/data/experiences";
 
@@ -12,14 +13,13 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-5 py-16 lg:px-10">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <Link to="/" className="flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full border border-gold/60 text-gold">
-                <Compass className="h-4 w-4" aria-hidden />
-              </span>
-              <span className="font-display text-xl tracking-wide text-ivory">{site.brandName}</span>
+            <Link to="/" className="group inline-flex" aria-label={`${site.brandName} — home`}>
+              <BrandLockup />
             </Link>
             <p className="mt-5 font-display text-lg italic text-gold/90">“{site.tagline}”</p>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-ivory/60">{site.description}</p>
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-ivory/60">
+              {site.description}
+            </p>
           </div>
 
           <nav aria-label="Quick navigation">
@@ -83,7 +83,12 @@ export function Footer() {
               {wa ? (
                 <li className="flex items-center gap-2">
                   <MessageCircle className="h-4 w-4 shrink-0 text-gold/70" aria-hidden />
-                  <a href={wa} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-gold">
+                  <a
+                    href={wa}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="transition-colors hover:text-gold"
+                  >
                     WhatsApp us
                   </a>
                 </li>

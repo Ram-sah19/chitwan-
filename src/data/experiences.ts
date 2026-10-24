@@ -14,15 +14,26 @@ import wlGharial from "@/assets/wl-gharial.jpg";
 import wlCrocodile from "@/assets/wl-crocodile.jpg";
 import wlForest from "@/assets/wl-forest.jpg";
 
-export { heroRhino };
+export {
+  heroRhino,
+  expRiverside,
+  expJungleWalk,
+  expCanoe,
+  expJeep,
+  expTower,
+  expBirdwatching,
+  expTharu,
+  expElephant,
+  expBeeshazari,
+  wlTiger,
+  wlDeer,
+  wlGharial,
+  wlCrocodile,
+  wlForest,
+};
 
 export type ExperienceCategory =
-  | "wildlife"
-  | "river-wetlands"
-  | "adventure"
-  | "birdwatching"
-  | "culture"
-  | "overnight";
+  "wildlife" | "river-wetlands" | "adventure" | "birdwatching" | "culture" | "overnight";
 
 export interface GalleryImage {
   src: string;
@@ -358,9 +369,7 @@ export const experiences: Experience[] = [
       "This is a community-hosted event; follow your host's guidance",
       "Ask permission before photographing performers up close",
     ],
-    seasonal: [
-      "Performances run year-round; village festivals add special occasions",
-    ],
+    seasonal: ["Performances run year-round; village festivals add special occasions"],
     note: "Performances are presented with the participating communities and emphasise cultural respect and locally led experiences — never culture as a spectacle.",
     gallery: [
       { src: expTharu, alt: "Tharu community dance around a fire at dusk" },
@@ -397,9 +406,7 @@ export const experiences: Experience[] = [
       "Keep the distance your guide sets, always",
       "Never attempt to approach, feed or call to elephants",
     ],
-    seasonal: [
-      "Sightings vary with season, water levels and elephant movement",
-    ],
+    seasonal: ["Sightings vary with season, water levels and elephant movement"],
     note: "Any additional activities such as feeding or walking alongside elephants would only be offered after confirming the activity, animal-welfare practices, supervision and safety arrangements with the operator. No interaction is labelled ethical without evidence supporting it.",
     gallery: [
       { src: expElephant, alt: "Elephant herd grazing across open grassland at dusk" },

@@ -262,12 +262,12 @@ const seasons = [
   },
 ];
 
-export function Seasons() {
+export function Seasons({ eyebrow = "Travel Guide" }: { eyebrow?: string }) {
   return (
     <section className="section-forest py-24 lg:py-32" aria-labelledby="seasons-heading">
       <div className="mx-auto max-w-7xl px-5 lg:px-10">
         <Reveal className="max-w-2xl">
-          <p className="eyebrow text-gold">Travel Guide</p>
+          <p className="eyebrow text-gold">{eyebrow}</p>
           <h2 id="seasons-heading" className="mt-4 font-display text-4xl leading-tight text-ivory sm:text-5xl">
             When to Visit.
           </h2>

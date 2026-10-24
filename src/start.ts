@@ -1,6 +1,7 @@
 import { createStart, createCsrfMiddleware, createMiddleware } from "@tanstack/react-start";
 
 import { renderErrorPage } from "./lib/error-page";
+import { buildSitemapXml } from "./lib/sitemap";
 import { attachSupabaseAuth } from "@/integrations/supabase/auth-attacher";
 
 const errorMiddleware = createMiddleware().server(async ({ next }) => {
@@ -25,7 +26,22 @@ const csrfMiddleware = createCsrfMiddleware({
   filter: (ctx) => ctx.handlerType === "serverFn",
 });
 
+// Served from the request origin so no domain is ever hardcoded into the file.
+const sitemapMiddleware = createMiddleware().server(async ({ next, request }) => {
+  const url = new URL(request.url);
+  if (!["GET", "HEAD"].includes(request.method) || url.pathname !== "/sitemap.xml") {
+    return next();
+  }
+
+  return new Response(buildSitemapXml(url.origin), {
+    headers: {
+      "content-type": "application/xml; charset=utf-8",
+      "cache-control": "public, max-age=3600",
+    },
+  });
+});
+
 export const startInstance = createStart(() => ({
   functionMiddleware: [attachSupabaseAuth],
-  requestMiddleware: [errorMiddleware, csrfMiddleware],
+  requestMiddleware: [sitemapMiddleware, errorMiddleware, csrfMiddleware],
 }));

@@ -28,27 +28,25 @@ export function WhatsAppFloat() {
       <span className="hidden rounded-full bg-jungle/90 px-4 py-2 text-xs tracking-wide text-ivory shadow-lg backdrop-blur sm:block">
         Chat with us on WhatsApp
       </span>
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Contact us on WhatsApp"
-        className="group relative flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-xl transition-transform hover:scale-105"
-      >
-        <MessageCircle className="h-6 w-6" aria-hidden />
+      <div className="group relative">
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Contact us on WhatsApp"
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-xl transition-transform hover:scale-105"
+        >
+          <MessageCircle className="h-6 w-6" aria-hidden />
+        </a>
         <button
           type="button"
           aria-label="Hide WhatsApp button"
-          className="absolute -right-1 -top-1 hidden h-5 w-5 items-center justify-center rounded-full bg-jungle text-ivory group-hover:flex"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            setDismissed(true);
-          }}
+          className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-jungle text-ivory opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100 hover:text-gold"
+          onClick={() => setDismissed(true)}
         >
           <X className="h-3 w-3" aria-hidden />
         </button>
-      </a>
+      </div>
     </div>
   );
 }

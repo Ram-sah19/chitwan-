@@ -19,13 +19,11 @@ const inputClass =
 
 type Status = "idle" | "loading" | "success" | "error";
 
-export function InquiryForm({ defaultExperience }: { defaultExperience?: string }) {
+export function InquiryForm({ defaultExperience }: { defaultExperience?: string | undefined }) {
   const submitFn = useServerFn(submitInquiry);
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string | null>(null);
-  const [selected, setSelected] = useState<string[]>(
-    defaultExperience ? [defaultExperience] : [],
-  );
+  const [selected, setSelected] = useState<string[]>(defaultExperience ? [defaultExperience] : []);
 
   const toggleExperience = (title: string) =>
     setSelected((prev) =>
@@ -53,7 +51,8 @@ export function InquiryForm({ defaultExperience }: { defaultExperience?: string 
 
     // Client-side validation of the required essentials.
     if (!data.fullName.trim()) return setError("Please share your name.");
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return setError("Please share a valid email address.");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email))
+      return setError("Please share a valid email address.");
 
     setStatus("loading");
     try {
@@ -78,9 +77,10 @@ export function InquiryForm({ defaultExperience }: { defaultExperience?: string 
         setError(result.error);
       }
     } catch (err) {
-      const message = err instanceof Error && /smaller|bigger|invalid|expected/i.test(err.message)
-        ? "Please check the highlighted fields and try again."
-        : "We could not send your inquiry right now. Please try again in a moment.";
+      const message =
+        err instanceof Error && /smaller|bigger|invalid|expected/i.test(err.message)
+          ? "Please check the highlighted fields and try again."
+          : "We could not send your inquiry right now. Please try again in a moment.";
       setStatus("error");
       setError(message);
     }
@@ -90,10 +90,12 @@ export function InquiryForm({ defaultExperience }: { defaultExperience?: string 
     return (
       <div className="border border-gold/40 bg-gold/10 p-10 text-center">
         <Check className="mx-auto h-10 w-10 text-gold" aria-hidden />
-        <h3 className="mt-5 font-display text-2xl text-ivory">Thank you — your inquiry is on its way.</h3>
+        <h3 className="mt-5 font-display text-2xl text-ivory">
+          Thank you — your inquiry is on its way.
+        </h3>
         <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-ivory/70">
-          We have received your request and will reply with a personal safari plan.
-          There is nothing to pay or confirm until we have spoken with you.
+          We have received your request and will reply with a personal safari plan. There is nothing
+          to pay or confirm until we have spoken with you.
         </p>
         <button
           type="button"
@@ -110,27 +112,65 @@ export function InquiryForm({ defaultExperience }: { defaultExperience?: string 
     <form onSubmit={handleSubmit} noValidate={false} className="space-y-6">
       <div className="grid gap-6 sm:grid-cols-2">
         <label className="block">
-          <span className="mb-2 block text-xs tracking-widest text-ivory/70 uppercase">Full name *</span>
-          <input name="fullName" required maxLength={120} className={inputClass} placeholder="Your name" />
+          <span className="mb-2 block text-xs tracking-widest text-ivory/70 uppercase">
+            Full name *
+          </span>
+          <input
+            name="fullName"
+            required
+            maxLength={120}
+            className={inputClass}
+            placeholder="Your name"
+          />
         </label>
         <label className="block">
-          <span className="mb-2 block text-xs tracking-widest text-ivory/70 uppercase">Email address *</span>
-          <input name="email" type="email" required maxLength={255} className={inputClass} placeholder="you@example.com" />
+          <span className="mb-2 block text-xs tracking-widest text-ivory/70 uppercase">
+            Email address *
+          </span>
+          <input
+            name="email"
+            type="email"
+            required
+            maxLength={255}
+            className={inputClass}
+            placeholder="you@example.com"
+          />
         </label>
         <label className="block">
-          <span className="mb-2 block text-xs tracking-widest text-ivory/70 uppercase">WhatsApp / phone number</span>
-          <input name="phone" type="tel" maxLength={40} className={inputClass} placeholder="+977 …" />
+          <span className="mb-2 block text-xs tracking-widest text-ivory/70 uppercase">
+            WhatsApp / phone number
+          </span>
+          <input
+            name="phone"
+            type="tel"
+            maxLength={40}
+            className={inputClass}
+            placeholder="+977 …"
+          />
         </label>
         <label className="block">
-          <span className="mb-2 block text-xs tracking-widest text-ivory/70 uppercase">Preferred visit date</span>
+          <span className="mb-2 block text-xs tracking-widest text-ivory/70 uppercase">
+            Preferred visit date
+          </span>
           <input name="visitDate" type="date" className={cn(inputClass, "text-ivory/90")} />
         </label>
         <label className="block">
-          <span className="mb-2 block text-xs tracking-widest text-ivory/70 uppercase">Number of travellers</span>
-          <input name="travellers" type="number" min={1} max={50} className={inputClass} placeholder="2" />
+          <span className="mb-2 block text-xs tracking-widest text-ivory/70 uppercase">
+            Number of travellers
+          </span>
+          <input
+            name="travellers"
+            type="number"
+            min={1}
+            max={50}
+            className={inputClass}
+            placeholder="2"
+          />
         </label>
         <label className="block">
-          <span className="mb-2 block text-xs tracking-widest text-ivory/70 uppercase">Country of residence (optional)</span>
+          <span className="mb-2 block text-xs tracking-widest text-ivory/70 uppercase">
+            Country of residence (optional)
+          </span>
           <input name="country" maxLength={80} className={inputClass} placeholder="Your country" />
         </label>
       </div>
@@ -160,9 +200,13 @@ export function InquiryForm({ defaultExperience }: { defaultExperience?: string 
       </fieldset>
 
       <label className="block">
-        <span className="mb-2 block text-xs tracking-widest text-ivory/70 uppercase">Preferred tour duration</span>
+        <span className="mb-2 block text-xs tracking-widest text-ivory/70 uppercase">
+          Preferred tour duration
+        </span>
         <select name="duration" defaultValue="" className={cn(inputClass, "appearance-none")}>
-          <option value="" className="text-foreground">Select a duration</option>
+          <option value="" className="text-foreground">
+            Select a duration
+          </option>
           {durationOptions.map((d) => (
             <option key={d} value={d} className="text-foreground">
               {d}
@@ -172,7 +216,9 @@ export function InquiryForm({ defaultExperience }: { defaultExperience?: string 
       </label>
 
       <label className="block">
-        <span className="mb-2 block text-xs tracking-widest text-ivory/70 uppercase">Additional requests</span>
+        <span className="mb-2 block text-xs tracking-widest text-ivory/70 uppercase">
+          Additional requests
+        </span>
         <textarea
           name="message"
           rows={4}
@@ -183,7 +229,10 @@ export function InquiryForm({ defaultExperience }: { defaultExperience?: string 
       </label>
 
       {error && (
-        <p role="alert" className="border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive-foreground">
+        <p
+          role="alert"
+          className="border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive-foreground"
+        >
           {error}
         </p>
       )}

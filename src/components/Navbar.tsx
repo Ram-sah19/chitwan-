@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu, X, Compass } from "lucide-react";
+import { ArrowRight, Menu, X } from "lucide-react";
 import { site } from "@/data/site";
 import { cn } from "@/lib/utils";
+import { BrandLockup } from "@/components/BrandMark";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -21,32 +22,31 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-500",
+        "fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-out",
         scrolled
-          ? "bg-jungle/95 shadow-lg shadow-jungle/40 backdrop-blur-md"
-          : "bg-gradient-to-b from-jungle/70 to-transparent",
+          ? "border-b border-gold/25 bg-jungle/92 shadow-[0_18px_40px_-32px_rgba(0,0,0,0.95)] backdrop-blur-xl"
+          : "bg-gradient-to-b from-jungle/80 via-jungle/40 to-transparent",
       )}
     >
       <nav
-        className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-10"
+        className={cn(
+          "mx-auto flex max-w-7xl items-center justify-between px-5 transition-all duration-500 ease-out lg:px-10",
+          scrolled ? "py-2.5" : "py-5",
+        )}
         aria-label="Main navigation"
       >
-        <Link to="/" className="group flex items-center gap-3" aria-label={`${site.brandName} — home`}>
-          <span className="flex h-9 w-9 items-center justify-center rounded-full border border-gold/60 text-gold transition-colors group-hover:bg-gold group-hover:text-jungle">
-            <Compass className="h-4 w-4" aria-hidden />
-          </span>
-          <span className="font-display text-lg leading-tight tracking-wide text-ivory sm:text-xl">
-            {site.brandName}
-          </span>
+        <Link to="/" className="group flex items-center" aria-label={`${site.brandName} — home`}>
+          <BrandLockup tailClassName="hidden xl:block" />
         </Link>
 
-        <ul className="hidden items-center gap-7 lg:flex">
+        <ul className="hidden items-center gap-6 lg:flex xl:gap-8">
           {site.nav.map((item) => (
             <li key={item.to}>
               <Link
                 to={item.to}
                 data-active={pathname === item.to}
-                className="nav-link text-[13px] font-medium tracking-wide text-ivory/85 transition-colors hover:text-ivory data-[active=true]:text-gold"
+                aria-current={pathname === item.to ? "page" : undefined}
+                className="nav-link whitespace-nowrap text-[13px] font-medium tracking-[0.04em] text-ivory/80 transition-colors duration-300 hover:text-ivory focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold data-[active=true]:text-gold"
               >
                 {item.label}
               </Link>
@@ -55,18 +55,14 @@ export function Navbar() {
         </ul>
 
         <div className="hidden lg:block">
-          <Link
-            to="/contact"
-            className="inline-flex items-center gap-2 border border-gold/70 px-5 py-2.5 text-[13px] font-semibold tracking-wide text-gold transition-all hover:bg-gold hover:text-jungle"
-          >
-            Plan Your Safari
-          </Link>
+          <SafariCta className="px-5 py-2.5" />
         </div>
 
         <button
           type="button"
-          className="text-ivory lg:hidden"
+          className="flex h-10 w-10 items-center justify-center text-ivory transition-colors hover:text-gold focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-gold lg:hidden"
           aria-expanded={open}
+          aria-controls="mobile-nav"
           aria-label={open ? "Close menu" : "Open menu"}
           onClick={() => setOpen((v) => !v)}
         >
@@ -74,33 +70,61 @@ export function Navbar() {
         </button>
       </nav>
 
-      {open && (
-        <div className="border-t border-ivory/10 bg-jungle/95 backdrop-blur-md lg:hidden">
-          <ul className="space-y-1 px-5 py-4">
+      {/* Always mounted so the drawer animates both ways; when closed it carries no paint at all
+          (no background, blur or border) so its collapsed sliver can't show as a hairline. */}
+      <div
+        id="mobile-nav"
+        aria-hidden={!open}
+        className={cn(
+          "grid overflow-hidden transition-[grid-template-rows,opacity,visibility] duration-500 ease-out lg:hidden",
+          open
+            ? "visible grid-rows-[1fr] border-t border-ivory/10 bg-jungle/95 opacity-100 backdrop-blur-xl"
+            : "invisible grid-rows-[0fr] opacity-0",
+        )}
+      >
+        <div className="min-h-0 overflow-hidden">
+          <ul className="space-y-1 px-5 pb-5 pt-3">
             {site.nav.map((item) => (
               <li key={item.to}>
                 <Link
                   to={item.to}
                   className={cn(
-                    "block px-2 py-3 text-sm tracking-wide",
-                    pathname === item.to ? "text-gold" : "text-ivory/85",
+                    "block border-b border-ivory/5 py-3 text-sm tracking-[0.04em] transition-colors",
+                    pathname === item.to ? "text-gold" : "text-ivory/80 hover:text-ivory",
                   )}
                 >
                   {item.label}
                 </Link>
               </li>
             ))}
-            <li className="pt-3">
-              <Link
-                to="/contact"
-                className="block bg-gold px-4 py-3 text-center text-sm font-semibold text-jungle"
-              >
-                Plan Your Safari
-              </Link>
+            <li className="pt-4">
+              <SafariCta className="w-full px-4 py-3.5 text-center" />
             </li>
           </ul>
         </div>
-      )}
+      </div>
     </header>
+  );
+}
+
+function SafariCta({ className }: { className?: string }) {
+  return (
+    <Link
+      to="/contact"
+      className={cn(
+        "group relative inline-flex items-center justify-center gap-2 overflow-hidden border border-gold/60 text-[12px] font-semibold uppercase tracking-[0.16em] text-gold transition-colors duration-500 hover:text-jungle focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-gold",
+        className,
+      )}
+    >
+      <span
+        className="absolute inset-0 z-0 origin-left scale-x-0 bg-gold transition-transform duration-500 ease-out group-hover:scale-x-100"
+        aria-hidden
+      />
+      <span className="relative z-10">Plan Your Safari</span>
+      <ArrowRight
+        className="relative z-10 h-3.5 w-3.5 transition-transform duration-500 ease-out group-hover:translate-x-1"
+        aria-hidden
+      />
+    </Link>
   );
 }

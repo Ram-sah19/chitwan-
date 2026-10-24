@@ -12,7 +12,10 @@ interface LightboxProps {
 export function Lightbox({ images, index, onClose, onNavigate }: LightboxProps) {
   const total = images.length;
 
-  const prev = useCallback(() => onNavigate((index - 1 + total) % total), [index, total, onNavigate]);
+  const prev = useCallback(
+    () => onNavigate((index - 1 + total) % total),
+    [index, total, onNavigate],
+  );
   const next = useCallback(() => onNavigate((index + 1) % total), [index, total, onNavigate]);
 
   useEffect(() => {
@@ -30,6 +33,7 @@ export function Lightbox({ images, index, onClose, onNavigate }: LightboxProps) 
   }, [onClose, prev, next]);
 
   const image = images[index];
+  if (!image) return null;
 
   return (
     <div
