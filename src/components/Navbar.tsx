@@ -20,65 +20,77 @@ export function Navbar() {
   useEffect(() => setOpen(false), [pathname]);
 
   return (
-    <header
-      className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-500 ease-out",
-        scrolled
-          ? "border-b border-gold/25 bg-jungle/92 shadow-[0_18px_40px_-32px_rgba(0,0,0,0.95)] backdrop-blur-xl"
-          : "bg-gradient-to-b from-jungle/80 via-jungle/40 to-transparent",
-      )}
-    >
-      <nav
-        className={cn(
-          "mx-auto flex max-w-7xl items-center justify-between px-5 transition-all duration-500 ease-out lg:px-10",
-          scrolled ? "py-2.5" : "py-5",
-        )}
-        aria-label="Main navigation"
-      >
-        <Link to="/" className="group flex items-center" aria-label={`${site.brandName} — home`}>
-          <BrandLockup tailClassName="hidden xl:block" />
-        </Link>
+    <header className="fixed inset-x-0 top-0 z-50">
+      <div className="relative">
+        {/* The bar is built from two flat, borderless layers instead of one translucent panel:
+            a permanent scrim for logo/link contrast, and the dark bar fading in on scroll.
+            No backdrop-filter, border or shadow — any of those paint a hairline at the bottom edge. */}
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-jungle/80 via-jungle/40 to-transparent"
+          aria-hidden
+        />
+        <div
+          className={cn(
+            "pointer-events-none absolute inset-0 bg-jungle transition-opacity duration-500 ease-out",
+            scrolled ? "opacity-95" : "opacity-0",
+          )}
+          aria-hidden
+        />
 
-        <ul className="hidden items-center gap-6 lg:flex xl:gap-8">
-          {site.nav.map((item) => (
-            <li key={item.to}>
-              <Link
-                to={item.to}
-                data-active={pathname === item.to}
-                aria-current={pathname === item.to ? "page" : undefined}
-                className="nav-link whitespace-nowrap text-[13px] font-medium tracking-[0.04em] text-ivory/80 transition-colors duration-300 hover:text-ivory focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold data-[active=true]:text-gold"
-              >
-                {item.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        <div className="hidden lg:block">
-          <SafariCta className="px-5 py-2.5" />
-        </div>
-
-        <button
-          type="button"
-          className="flex h-10 w-10 items-center justify-center text-ivory transition-colors hover:text-gold focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-gold lg:hidden"
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => setOpen((v) => !v)}
+        <nav
+          className={cn(
+            "relative mx-auto flex max-w-7xl items-center justify-between px-5 transition-[padding] duration-500 ease-out lg:px-10",
+            scrolled ? "py-2.5" : "py-5",
+          )}
+          aria-label="Main navigation"
         >
-          {open ? <X className="h-6 w-6" aria-hidden /> : <Menu className="h-6 w-6" aria-hidden />}
-        </button>
-      </nav>
+          <Link to="/" className="group flex items-center" aria-label={`${site.brandName} — home`}>
+            <BrandLockup tailClassName="hidden xl:block" />
+          </Link>
 
-      {/* Always mounted so the drawer animates both ways; when closed it carries no paint at all
-          (no background, blur or border) so its collapsed sliver can't show as a hairline. */}
+          <ul className="hidden items-center gap-6 lg:flex xl:gap-8">
+            {site.nav.map((item) => (
+              <li key={item.to}>
+                <Link
+                  to={item.to}
+                  data-active={pathname === item.to}
+                  aria-current={pathname === item.to ? "page" : undefined}
+                  className="nav-link whitespace-nowrap text-[13px] font-medium tracking-[0.04em] text-ivory/80 transition-colors duration-300 hover:text-ivory focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-gold data-[active=true]:text-gold"
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <div className="hidden lg:block">
+            <SafariCta className="px-5 py-2.5" />
+          </div>
+
+          <button
+            type="button"
+            className="flex h-10 w-10 items-center justify-center text-ivory transition-colors hover:text-gold focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-gold lg:hidden"
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? (
+              <X className="h-6 w-6" aria-hidden />
+            ) : (
+              <Menu className="h-6 w-6" aria-hidden />
+            )}
+          </button>
+        </nav>
+      </div>
+
       <div
         id="mobile-nav"
         aria-hidden={!open}
         className={cn(
           "grid overflow-hidden transition-[grid-template-rows,opacity,visibility] duration-500 ease-out lg:hidden",
           open
-            ? "visible grid-rows-[1fr] border-t border-ivory/10 bg-jungle/95 opacity-100 backdrop-blur-xl"
+            ? "visible grid-rows-[1fr] bg-jungle opacity-100"
             : "invisible grid-rows-[0fr] opacity-0",
         )}
       >
@@ -89,7 +101,7 @@ export function Navbar() {
                 <Link
                   to={item.to}
                   className={cn(
-                    "block border-b border-ivory/5 py-3 text-sm tracking-[0.04em] transition-colors",
+                    "block py-3 text-sm tracking-[0.04em] transition-colors",
                     pathname === item.to ? "text-gold" : "text-ivory/80 hover:text-ivory",
                   )}
                 >

@@ -59,15 +59,15 @@
   --radius: 0.25rem;
 
   /* Brand palette (light = ivory editorial base) */
-  --forest: oklch(0.263 0.031 165);        /* #14291F deep forest green */
-  --forest-deep: oklch(0.22 0.026 165);    /* darker forest for panels */
-  --jungle: oklch(0.158 0.021 165);        /* #0B1712 almost-black jungle */
-  --ivory: oklch(0.962 0.011 90);          /* #F6F2E9 warm ivory */
-  --ivory-warm: oklch(0.93 0.014 90);      /* deeper ivory for cards */
-  --sage: oklch(0.752 0.033 132);          /* #A8B49B muted sage */
-  --gold: oklch(0.76 0.086 82);            /* #C6A56A antique gold */
+  --forest: oklch(0.263 0.031 165); /* #14291F deep forest green */
+  --forest-deep: oklch(0.22 0.026 165); /* darker forest for panels */
+  --jungle: oklch(0.158 0.021 165); /* #0B1712 almost-black jungle */
+  --ivory: oklch(0.962 0.011 90); /* #F6F2E9 warm ivory */
+  --ivory-warm: oklch(0.93 0.014 90); /* deeper ivory for cards */
+  --sage: oklch(0.752 0.033 132); /* #A8B49B muted sage */
+  --gold: oklch(0.76 0.086 82); /* #C6A56A antique gold */
   --gold-soft: oklch(0.82 0.07 85);
-  --charcoal: oklch(0.245 0.013 140);      /* #20251F charcoal */
+  --charcoal: oklch(0.245 0.013 140); /* #20251F charcoal */
 
   --background: var(--ivory);
   --foreground: var(--charcoal);
@@ -198,8 +198,7 @@
     transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .nav-link:hover::after,
-  .nav-link:focus-visible::after,
-  .nav-link[data-active="true"]::after {
+  .nav-link:focus-visible::after {
     transform: scaleX(1);
   }
 
@@ -219,7 +218,9 @@
   .reveal {
     opacity: 0;
     transform: translateY(24px);
-    transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    transition:
+      opacity 0.9s ease,
+      transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .reveal.is-visible {
     opacity: 1;
@@ -239,9 +240,18 @@
 
   /* Subtle hero scroll indicator */
   @keyframes scroll-hint {
-    0% { transform: translateY(0); opacity: 1; }
-    70% { transform: translateY(10px); opacity: 0; }
-    100% { transform: translateY(0); opacity: 0; }
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    70% {
+      transform: translateY(10px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 0;
+    }
   }
   .scroll-hint {
     animation: scroll-hint 2.2s ease-in-out infinite;
